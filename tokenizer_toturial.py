@@ -24,3 +24,5 @@ print(outputs.logits.shape)
 
 predications = torch.nn.functional.softmax(outputs.logits, dim=-1)
 print(predications)
+# id2label可以自己设计，标签名字对应都可以自己指定
+print(model.config.id2label)
