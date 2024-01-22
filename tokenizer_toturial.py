@@ -1,4 +1,5 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 
 # 指定模型名称即可对应加载
 checkpoint="distilbert-base-uncased-finetuned-sst-2-english"
@@ -18,7 +19,8 @@ print(inputs)
 # 可以看到反解析出来的结果多了[CLS],[SEP], 这些是模型训练的时候加入的
 print(tokenizer.decode([101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172, 2607,  2026,  2878,  2166,  1012, 102]))
 outputs=model(**inputs)
-# 输出结果为2*15*768, 2是因为我们的输入为2条，15是因为每个句子输入转换为长度为15的input ids数组, 768为输出维数
-print(outputs.last_hidden_state.shape)
 # 输出结果为2*2
 print(outputs.logits.shape)
+
+predications = torch.nn.functional.softmax(outputs.logits, dim=-1)
+print(predications)
